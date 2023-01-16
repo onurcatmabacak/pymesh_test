@@ -1,4 +1,5 @@
 import pymesh as pm
+import numpy as np
 
 def load_mesh(filename):
 
@@ -29,6 +30,41 @@ def tetgen(filename):
 
     print(dir(mesh))
 
+def boundary_edges(filename):
+
+    mesh = load_mesh(filename)
+    #mesh.enable_connectivity()
+    print( mesh.boundary_edges )
+
+
+def integrate(filename, time_step):
+
+    mesh = load_mesh(filename)
+    assembler = pm.Assembler(mesh)
+    M = assembler.assemble("mass")
+
+    L = -assembler.assemble("graph_laplacian");
+    ##Keep L fixed!
+    
+    bbox_min, bbox_max = mesh.bbox
+    s = np.amax(bbox_max - bbox_min)  # why?
+    S = M + (time_step * s) * L
+    
+    solver = pm.SparseSolver.create("SparseLU")
+    solver.compute(S)
+    
+    mv = M * mesh.vertices
+
+    # print2outershell("before solve")
+    vertices = solver.solve(mv)
+
+    # print2outershell("after solve")
+    print(vertices, mesh.faces)
+    return vertices, mesh.faces
+
 filename = "bunny.obj"
 #save_mesh(filename)
-tetgen(filename)
+#tetgen(filename)
+
+#boundary_edges(filename)
+integrate(filename, time_step=0.5)
