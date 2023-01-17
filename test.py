@@ -42,7 +42,7 @@ def integrate(filename, time_step):
     mesh = load_mesh(filename)
     assembler = pm.Assembler(mesh)
     M = assembler.assemble("mass")
-
+    print(M)
     L = -assembler.assemble("graph_laplacian");
     ##Keep L fixed!
     
