@@ -96,6 +96,7 @@ def getHullStats(hull):
 
     # y is height, x is width and z is depth
     bbox = hull.bbox
+    print(bbox)
     geometry["width"] = bbox[1][0] - bbox[0][0]
     geometry["height"] = bbox[1][1] - bbox[0][1]
     geometry["depth"] = bbox[1][2] - bbox[0][2]
@@ -110,7 +111,7 @@ def getHullStats(hull):
 def scaleHull(hull, scale):
     # provide scale with array of x,y,z scale.
     # Example: Scale factor 2 => [2,2,2]
-
+    print("onuronur: ", hull.voxels)
     return pm.form_mesh(hull.vertices * np.array(scale), hull.faces, hull.voxels)
 
 
