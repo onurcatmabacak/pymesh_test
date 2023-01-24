@@ -11,7 +11,9 @@ mesh = pymesh_utils.load_mesh(filename)
 #signed_volume = pymesh_utils.get_signed_volume(mesh)
 #print(signed_volume)
 
-hull = pymesh.convex_hull(mesh, engine='qhull', with_timing=False)
-print( mesh.get_vertex_adjacent_vertices(1) )
-quit()
-print( pymesh_utils.scaleHull(hull, 2.0) )
+# hull = pymesh.convex_hull(mesh, engine='qhull', with_timing=False)
+# print( mesh.get_vertex_adjacent_vertices(1) )
+# quit()
+# print( pymesh_utils.scaleHull(hull, 2.0) )
+
+print( pymesh_utils.integrate(mesh, time_step=0.1, L=1.0) )

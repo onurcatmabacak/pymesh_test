@@ -206,10 +206,14 @@ def print2outershell(what):
 
 
 def integrate(mesh, time_step, L):
+
     assembler = pm.Assembler(mesh)
     M = assembler.assemble("mass")
-    ##L = -assembler.assemble("graph_laplacian");
+    L = -assembler.assemble("graph_laplacian");
     ##Keep L fixed!
+    print(mesh.vertices)
+    print(M)
+    quit()
     bbox_min, bbox_max = mesh.bbox
     s = np.amax(bbox_max - bbox_min)  # why?
     S = M + (time_step * s) * L
