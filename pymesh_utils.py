@@ -211,15 +211,16 @@ def integrate(mesh, time_step, L):
     M = assembler.assemble("mass")
     L = -assembler.assemble("graph_laplacian");
     ##Keep L fixed!
-    print(mesh.vertices)
-    print(M)
-    quit()
+    print(L)
+    #quit()
     bbox_min, bbox_max = mesh.bbox
     s = np.amax(bbox_max - bbox_min)  # why?
     S = M + (time_step * s) * L
+
     solver = pm.SparseSolver.create("SparseLU")
     solver.compute(S)
     mv = M * mesh.vertices
+
     # print2outershell("before solve")
     vertices = solver.solve(mv)
     # print2outershell("after solve")
