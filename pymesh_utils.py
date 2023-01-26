@@ -386,6 +386,7 @@ def is_valid_mesh(mesh):
     #    logging.info("mesh has boundary")
     #    return False
     ints = pm.detect_self_intersection(mesh)
+    print("onuronur: ", ints)
     return mesh.is_edge_manifold() and mesh.is_vertex_manifold() and len(ints) == 0
 
 
