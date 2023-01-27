@@ -25,4 +25,22 @@ mesh = pymesh_utils.load_mesh(filename)
 # normals = mesh.get_face_attribute(pymesh_constants.FACE_NORMAL)
 # print( normals )
 
-print( pm.detect_self_intersection(mesh) )
+#print( pm.detect_self_intersection(mesh) )
+
+
+#mesh.add_attribute(pymesh_constants.FACE_CIRCUMCENTER)
+
+#print(mesh.get_face_attribute(pymesh_constants.FACE_CIRCUMCENTER))
+
+tetgen = pymesh_utils.tetgen()
+tetgen.points = mesh.vertices  # Input points.
+tetgen.triangles = mesh.faces  # Input triangles
+tetgen.max_tet_volume = 150
+tetgen.verbosity = 0
+tetgen.merge_coplanar = True
+tetgen.keep_convex_hull = False
+tetgen.run()  # Execute tetgen
+
+ttrd_mesh = tetgen.mesh
+
+print(ttrd_mesh.voxels)
