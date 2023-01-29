@@ -3,8 +3,28 @@ import numpy as np
 import pymesh as pm 
 import pymesh_constants
 
-filename = "bunny.obj"
+def tetramesh_generator(mesh):
 
+    tetgen = pymesh_utils.tetgen()
+    tetgen.points = mesh.vertices  # Input points.
+    tetgen.triangles = mesh.faces  # Input triangles
+    tetgen.max_tet_volume = 150
+    tetgen.verbosity = 0
+    tetgen.merge_coplanar = True
+    tetgen.keep_convex_hull = False
+    tetgen.run()  # Execute tetgen
+
+    ttrd_mesh = tetgen.mesh
+
+    block = "\n\n\n ############################################################### \n\n\n"
+
+    print(mesh.vertices, block, mesh.faces, block, ttrd_mesh.voxels)
+
+    if np.asarray([3282, 4080, 3210, 4079]) in ttrd_mesh.voxels: print("yes")
+    if np.asarray([408, 356, 4011, 4017]) in ttrd_mesh.voxels: print("yes")
+    if np.asarray([876, 973, 810, 889]) in ttrd_mesh.voxels: print("yes")
+
+filename = "bunny.obj"
 mesh = pymesh_utils.load_mesh(filename)
 
 #get_boundary_face_indices = pymesh_utils.get_boundary_face_indices(mesh)
@@ -31,16 +51,4 @@ mesh = pymesh_utils.load_mesh(filename)
 #mesh.add_attribute(pymesh_constants.FACE_CIRCUMCENTER)
 
 #print(mesh.get_face_attribute(pymesh_constants.FACE_CIRCUMCENTER))
-
-tetgen = pymesh_utils.tetgen()
-tetgen.points = mesh.vertices  # Input points.
-tetgen.triangles = mesh.faces  # Input triangles
-tetgen.max_tet_volume = 150
-tetgen.verbosity = 0
-tetgen.merge_coplanar = True
-tetgen.keep_convex_hull = False
-tetgen.run()  # Execute tetgen
-
-ttrd_mesh = tetgen.mesh
-
-print(ttrd_mesh.voxels)
+tetramesh_generator(mesh)
