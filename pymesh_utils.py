@@ -389,6 +389,17 @@ def is_valid_mesh(mesh):
     print("onuronur: ", ints)
     return mesh.is_edge_manifold() and mesh.is_vertex_manifold() and len(ints) == 0
 
+def get_voxel_adjacent_voxels(mesh, index):
+
+    return np.asarray([ind for ind, voxel in enumerate(mesh.voxels) if len(np.intersect1d(mesh.voxels[index], voxel)) == 3])
+
+def get_voxel_adjacent_faces(mesh, index):
+
+    return np.asarray([ind for ind, face in enumerate(mesh.faces) if len(np.intersect1d(mesh.voxels[index], face)) == 3])
+
+def get_face_adjacent_faces(mesh, index):
+
+    return np.asarray([ind for ind, face in enumerate(mesh.faces) if len(np.intersect1d(mesh.faces[index], face)) == 2])
 
 def getVoxelDualGraph(mesh):
     boundaryFaceCount = 0
@@ -401,7 +412,15 @@ def getVoxelDualGraph(mesh):
     face_centroids = mesh.get_face_attribute(pymesh_constants.FACE_CENTROID)
 
     for vc, voxel in enumerate(mesh.voxels):
+
         adjacentVoxels = mesh.get_voxel_adjacent_voxels(vc)
+        boundaryFaces = mesh.get_voxel_adjacent_faces(vc)
+
+        print(mesh.get_face_adjacent_faces(vc))
+        print(get_face_adjacent_faces(mesh, vc))
+        if vc == 10: quit()
+
+
         x1, y1, z1 = voxel_centroids[vc]
         for adjVoxel in adjacentVoxels:
             x2, y2, z2 = voxel_centroids[adjVoxel]
@@ -467,6 +486,7 @@ def get_scalefree_mean_curvature(mesh, scale=None):
     if scale:
         mesh = pm.form_mesh(scale * mesh.vertices, mesh.faces)
     bounds = mesh.boundary_vertices
+    print()
     mesh.add_attribute(pymesh_constants.VERTEX_MEAN_CURVATURE)
     h = mesh.get_attribute(pymesh_constants.VERTEX_MEAN_CURVATURE)
     mesh.add_attribute(pymesh_constants.VERTEX_GAUSSIAN_CURVATURE)

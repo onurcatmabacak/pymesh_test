@@ -18,8 +18,10 @@ def tetramesh_generator(mesh):
 
     block = "\n\n\n ############################################################### \n\n\n"
 
-    print(ttrd_mesh.voxels)
-    print(len(ttrd_mesh.vertices))
+    #print(ttrd_mesh.voxels)
+    #print(len(ttrd_mesh.vertices))
+
+    return ttrd_mesh
 
 filename = "bunny.obj"
 mesh = pymesh_utils.load_mesh(filename)
@@ -49,5 +51,7 @@ mesh = pymesh_utils.load_mesh(filename)
 
 #print(mesh.get_face_attribute(pymesh_constants.FACE_CIRCUMCENTER))
 
-tetramesh_generator(mesh)
-print(len(mesh.vertices))
+#tetmesh = tetramesh_generator(mesh)
+#pymesh_utils.getVoxelDualGraph(tetmesh)
+
+print( pm.collapse_short_edges(mesh, tol=1.0) )
